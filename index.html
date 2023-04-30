@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="shortcut icon"
+        href="https://img1.wsimg.com/blobby/go/862d9a30-3648-475d-a565-4c61406ed7f9/favicon/b38cf547-7fc6-4317-bbf0-ba2444aa0a48.ico"
+        sizes="16x16 24x24 32x32 48x48 64x64" />
+    <title>Shishir Dey's Side Projects</title>
+    <meta charset="utf-8">
+    <meta name="description" content="I am Shishir. Glad you visited my site. I design embedded systems at work, and when I am not
+    working, I participate in discussions with the community and watch movies.">
+    <meta name="keywords"
+        content="angular, aws, azure, ble, blog, bluetooth low energy, c, c++, c2000, contact, developer, embedded c, embedded linux, embedded software, embedded systems, engineer, expressjs, firmware, flask, gcp, git, hmi, iot, linux, microcontrollers, mongodb, msp430, nodejs, nrf52, pcb design, plc, portfolio, power electronics, project, python, react, rtos, rust, shishir dey, shishirdey, software, stm32, web development, wifi, zigbee">
+    <meta name="author" content="Shishir Dey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="M3vxZblk4YyJzovJ04ghIyGNmC3mTEijTZYGKhUj7bQ">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>hola!</h2>
+                <p>
+                    My name is Shishir, and I am an embedded systems designer. I enjoy engaging with the
+                    technology community and connecting with others who share my passions. When I am free, I enjoy
+                    scrolling through memes, watching movies and reading articles. I am happy you have stumbled upon my
+                    site, and I hope you find something of interest. Thank you for visiting!
+                </p>
+            </div>
+            <div class="col-md-12">
+                <h2>what I've been doing</h2>
+                <div class="card-container">
+                    <div class="card">
+                        <a href="https://github.com/shishir-dey/libpower">libpower</a>
+                        <p>A Rust library for power electronics systems</p>
+                        <img src="https://github.com/shishir-dey/libpower/raw/main/assets/libpower-logo-small.png"
+                            alt="The libpower logo">
+                    </div>
+                    <div class="card">
+                        <a href="https://github.com/shishir-dey/libhsm">libhsm</a>
+                        <p>A state machine framework written in Rust</p>
+                        <img src="https://github.com/shishir-dey/libhsm/raw/main/assets/libhsm-logo-small.png"
+                            alt="The libhsm logo">
+                    </div>
+                    <div class="card">
+                        <a href="https://github.com/shishir-dey/pcb-dev-dsPIC30F6010A">pcb-dev-dsPIC30F6010A</a>
+                        <p>A 4-layer development board with a dsPIC30F6010A microcontroller</p>
+                        <img src="https://github.com/shishir-dey/pcb-dev-dsPIC30F6010A/raw/main/Images/Final_Raytracing.jpg"
+                            alt="A picture of the development board">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h2>excerpts from my diary</h2>
+                <div class="blog-grid" id="blogGrid">
+                </div>
+                <script>
+                    function openBlog(event) {
+                        let url = "https://shishir-dey.github.io/content/";
+
+                        // Fetch the metadata file
+                        fetch(url + "metadata.txt")
+                            .then(response => response.text())
+                            .then(text => {
+                                // Split the file names by newline characters
+                                let fileNames = text.split("\n");
+
+                                console.log(fileNames);
+
+                                // Delete the last element if it is empty
+                                if (fileNames[fileNames.length - 1] === "") {
+                                    fileNames.pop();
+                                }
+
+                                // Loop over the file names
+                                fileNames.forEach(fileName => {
+                                    // Fetch the content of the file
+                                    fetch(url + fileName)
+                                        .then(response => response.text())
+                                        .then(text => {
+                                            // Split the content into lines
+                                            let lines = text.split("\n");
+
+                                            // Parse the title, date, tags, and body from the lines
+                                            let title = fileName;  // The title is the name of the file
+                                            title = title.substring(0, title.lastIndexOf(".")); // Remove the file extension
+                                            let date = lines[0];
+                                            let tags = lines[1].split(",");
+                                            let body = lines.slice(2).join("\n");
+
+                                            // Create a new blog card element
+                                            let blogCard = document.createElement("div");
+                                            blogCard.className = "blog-card";
+                                            blogCard.innerHTML = `
+                                                                <h3>${title}</h3>
+                                                                <p class="date">${date}</p>
+                                                                <p class="tag">${tags.join(" ")}</p>
+                                                                <p class="body">${body}</p>
+                                                                `;
+
+                                            // Append the blog card to the blog grid
+                                            document.getElementById("blogGrid").appendChild(blogCard);
+                                        });
+                                });
+                            });
+                    }
+                    // Load the blog posts
+                    openBlog();
+                </script>
+            </div>
+            <div class="col-md-12">
+                <h2>compétences</h2>
+                <ul>
+                    <li>Firmware Development</li>
+                    <li>PCB Designing</li>
+                    <li>Web Development</li>
+                    <li>PLC and HMI programming</li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <h2>and yes!</h2>
+                <p>
+                    Reach out to me at <a href="https://linktr.ee/shishirdey">linktr.ee/shishirdey</a>
+                </p>
+            </div>
+            <div class="col-md-12">
+                <footer>
+                    <p>Copyright © 2023 Shishir Dey - All Rights Reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
