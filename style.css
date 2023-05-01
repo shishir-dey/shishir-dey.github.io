@@ -38,6 +38,7 @@ footer {
 @media screen and (max-width: 480px) {
     .container {
         padding: 10px;
+        margin: 0;
     }
 
     .row {
@@ -58,9 +59,26 @@ footer {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .row {
+        padding: 5px;
+    }
+
+    footer {
+        padding: 15px;
+    }
+
+    .card-container {
+        padding: 5px;
+    }
+
     .card {
-        width: 50%;
+        width: 100% !important;
+        padding: 10px;
     }
 }
 
