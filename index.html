@@ -59,6 +59,13 @@
                 <div class="blog-grid" id="blogGrid">
                 </div>
                 <script>
+                    let images = document.getElementsByTagName("img");
+                    for (let i = 0; i < images.length; i++) {
+                        images[i].addEventListener("load", function () {
+                            images[i].classList.add("loaded");
+                        });
+                    }
+
                     function openBlog(event) {
                         let url = "https://shishir-dey.github.io/content/";
 
