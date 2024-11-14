@@ -15,7 +15,11 @@ module.exports = {
         use: {
           loader: 'babel-loader' // Use Babel loader
         }
-      }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
     ]
   },
   resolve: {

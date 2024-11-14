@@ -1,9 +1,24 @@
 // src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import DiaryViewer from './components/DiaryViewer';
 
 const App = () => {
-    return <h1>Hello, world!</h1>;
+    return (
+        <div className="min-h-screen">
+            <DiaryViewer />
+        </div>
+    );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// Get the root element
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+// Render the app
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
