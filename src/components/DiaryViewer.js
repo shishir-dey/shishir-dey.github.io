@@ -2,21 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Pin, X, Tag, Clock, Moon, Sun, Search } from 'lucide-react';
 
 const DiaryViewer = () => {
-    const [notes] = useState([
-        {
-            id: 1,
-            title: "Hola!",
-            body: "My name is Shishir, and I am an embedded systems designer. I enjoy engaging with the technology community and connecting with others who share my passions. I enjoy scrolling through memes, watching movies and reading articles. I am happy you have stumbled upon my site, and I hope you find something of interest. Thank you for visiting!",
-            isPinned: true,
-            lastEdited: "2024-11-14T18:30:00",
-            tags: ["personal"]
-        }
-    ]);
-
+    const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
     const [darkMode, setDarkMode] = useState(false);
     const [selectedTags, setSelectedTags] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+
+    // TODO Import all markdown files
 
     // Get all unique tags
     const allTags = Array.from(new Set(notes.flatMap(note => note.tags)));
