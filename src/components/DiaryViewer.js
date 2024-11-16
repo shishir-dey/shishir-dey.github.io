@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Pin, X, Tag, Clock, Moon, Sun, Search } from 'lucide-react';
 
 const DiaryViewer = () => {
@@ -7,34 +7,166 @@ const DiaryViewer = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [selectedTags, setSelectedTags] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-
-    // TODO Import all markdown files
+    const [isLoading, setIsLoading] = useState(true);
 
     // Get all unique tags
     const allTags = Array.from(new Set(notes.flatMap(note => note.tags)));
 
-    // Handle keyboard navigation
+    // Filter notes based on selected tags
+    const filteredNotes = useMemo(() => {
+        return notes.filter(note =>
+            selectedTags.length === 0 ||
+            selectedTags.every(tag => note.tags.includes(tag))
+        ).sort((a, b) => {
+            if (a.isPinned && !b.isPinned) return -1;
+            if (!a.isPinned && b.isPinned) return 1;
+            return new Date(b.lastEdited) - new Date(a.lastEdited);
+        });
+    }, [notes, selectedTags]);
+
+    const closeModal = useCallback(() => {
+        setModalVisible(false);
+        setTimeout(() => {
+            setSelectedNote(null);
+            document.body.style.overflow = '';
+        }, 200);
+    }, []);
+
+    const openModal = useCallback((note) => {
+        setSelectedNote(note);
+        setModalVisible(true);
+        document.body.style.overflow = 'hidden';
+    }, []);
+
+    // Load notes effect
     useEffect(() => {
+        const loadNotes = async () => {
+            try {
+                const response = await fetch('/content/notes/notes.json');
+                if (!response.ok) throw new Error('Failed to fetch notes.json');
+                const files = await response.json();
+
+                const notesData = await Promise.all(
+                    files.map(async (filename) => {
+                        const fileResponse = await fetch(`/content/notes/${filename}`);
+                        if (!fileResponse.ok) throw new Error(`Failed to fetch note: ${filename}`);
+                        const content = await fileResponse.text();
+
+                        // More lenient frontmatter parsing
+                        const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+
+                        if (!frontmatterMatch) {
+                            // If no frontmatter, treat entire content as body
+                            return {
+                                id: filename,
+                                title: filename.replace('.md', ''),
+                                date: new Date(),
+                                lastEdited: new Date(),
+                                tags: [],
+                                isPinned: false,
+                                content: content.trim()
+                            };
+                        }
+
+                        const [_, frontmatter, mainContent] = frontmatterMatch;
+
+                        // More forgiving metadata extraction
+                        const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]*)["']?/);
+                        const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n]*)["']?/);
+                        const tagsMatch = frontmatter.match(/tags:\s*\[(.*?)\]/);
+                        const pinnedMatch = frontmatter.match(/pinned:\s*(true|false)/);
+
+                        return {
+                            id: filename,
+                            title: titleMatch ? titleMatch[1].trim() : filename.replace('.md', ''),
+                            date: dateMatch ? new Date(dateMatch[1]) : new Date(),
+                            lastEdited: dateMatch ? new Date(dateMatch[1]) : new Date(),
+                            tags: tagsMatch
+                                ? tagsMatch[1].split(',').map(tag => tag.trim().replace(/['"]/g, ''))
+                                : [],
+                            isPinned: pinnedMatch ? pinnedMatch[1] === 'true' : false,
+                            content: mainContent.trim()
+                        };
+                    })
+                );
+
+                const sortedNotes = notesData.sort((a, b) => {
+                    if (a.isPinned && !b.isPinned) return -1;
+                    if (!a.isPinned && b.isPinned) return 1;
+                    return b.date - a.date;
+                });
+
+                setNotes(sortedNotes);
+            } catch (error) {
+                console.error('Error loading notes:', error);
+                setNotes([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadNotes();
+    }, []);
+
+    // Keyboard navigation effect
+    useEffect(() => {
+        if (!selectedNote) return; // Only add listener if there's a selected note
+
         const handleKeyDown = (e) => {
-            if (e.key === 'Escape' && selectedNote) {
+            if (e.key === 'Escape') {
                 closeModal();
             } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                if (selectedNote) {
-                    const currentIndex = filteredNotes.findIndex(note => note.id === selectedNote.id);
-                    let newIndex;
-                    if (e.key === 'ArrowLeft') {
-                        newIndex = currentIndex > 0 ? currentIndex - 1 : filteredNotes.length - 1;
-                    } else {
-                        newIndex = currentIndex < filteredNotes.length - 1 ? currentIndex + 1 : 0;
-                    }
-                    setSelectedNote(filteredNotes[newIndex]);
+                const currentIndex = filteredNotes.findIndex(note => note.id === selectedNote.id);
+                let newIndex;
+                if (e.key === 'ArrowLeft') {
+                    newIndex = currentIndex > 0 ? currentIndex - 1 : filteredNotes.length - 1;
+                } else {
+                    newIndex = currentIndex < filteredNotes.length - 1 ? currentIndex + 1 : 0;
                 }
+                setSelectedNote(filteredNotes[newIndex]);
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [selectedNote]);
+    }, [selectedNote, filteredNotes, closeModal]);
+
+    if (isLoading) {
+        return <div style={loadingStyle} />;
+    }
+
+    // Apple-style loading animation CSS
+    const loadingStyle = {
+        opacity: isLoading ? 1 : 0,
+        transition: 'opacity 0.5s ease-in-out',
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '50px',
+        height: '50px',
+        border: '3px solid #f3f3f3',
+        borderTop: '3px solid #3498db',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+    };
+
+    // Add keyframe animation
+    if (isLoading) {
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes spin {
+                0% { transform: translate(-50%, -50%) rotate(0deg); }
+                100% { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+
+    // Show loading animation while fetching
+    if (isLoading) {
+        return <div style={loadingStyle} />;
+    }
 
     // Format date to be more readable
     const formatDate = (dateString) => {
@@ -45,31 +177,6 @@ const DiaryViewer = () => {
             hour: '2-digit',
             minute: '2-digit'
         });
-    };
-
-    // Filter notes based on selected tags
-    const filteredNotes = notes.filter(note =>
-        selectedTags.length === 0 ||
-        selectedTags.every(tag => note.tags.includes(tag))
-    ).sort((a, b) => {
-        if (a.isPinned && !b.isPinned) return -1;
-        if (!a.isPinned && b.isPinned) return 1;
-        return new Date(b.lastEdited) - new Date(a.lastEdited);
-    });
-
-    const openModal = (note) => {
-        setSelectedNote(note);
-        setModalVisible(true);
-        // Add class to prevent body scroll
-        document.body.style.overflow = 'hidden';
-    };
-
-    const closeModal = () => {
-        setModalVisible(false);
-        setTimeout(() => {
-            setSelectedNote(null);
-            document.body.style.overflow = '';
-        }, 200);
     };
 
     return (
@@ -134,7 +241,7 @@ const DiaryViewer = () => {
                                 </div>
                                 <p className={`line-clamp-3 mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'
                                     }`}>
-                                    {note.body}
+                                    {note.content}
                                 </p>
                                 <div className={`flex items-center text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'
                                     }`}>
@@ -195,7 +302,7 @@ const DiaryViewer = () => {
                                 </div>
                                 <p className={`whitespace-pre-wrap mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'
                                     }`}>
-                                    {selectedNote.body}
+                                    {selectedNote.content}
                                 </p>
                                 <div className={`flex items-center text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'
                                     }`}>
