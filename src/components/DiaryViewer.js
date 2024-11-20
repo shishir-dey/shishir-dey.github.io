@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Pin, X, Tag, Clock, Moon, Sun, Search } from 'lucide-react';
+import { Pin, X, Tag, Clock, Moon, Sun, Search, Mail } from 'lucide-react';
 
 const DiaryViewer = () => {
     const [notes, setNotes] = useState([]);
@@ -187,13 +187,24 @@ const DiaryViewer = () => {
                 <div className="max-w-6xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between mb-4">
                         <h1 className="text-3xl font-bold">Shishir Dey.</h1>
-                        <button
-                            onClick={() => setDarkMode(!darkMode)}
-                            className={`p-2 rounded-full ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
-                                }`}
-                        >
-                            {darkMode ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <a
+                                href="https://shishirdey.com/contact"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`p-2 rounded-full ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
+                                    }`}
+                            >
+                                <Mail className="h-6 w-6" />
+                            </a>
+                            <button
+                                onClick={() => setDarkMode(!darkMode)}
+                                className={`p-2 rounded-full ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
+                                    }`}
+                            >
+                                {darkMode ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Tag Filter */}
