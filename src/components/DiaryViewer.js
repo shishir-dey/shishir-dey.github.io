@@ -75,10 +75,12 @@ const DiaryViewer = () => {
                         const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n]*)["']?/);
                         const tagsMatch = frontmatter.match(/tags:\s*\[(.*?)\]/);
                         const pinnedMatch = frontmatter.match(/pinned:\s*(true|false)/);
+                        const urlMatch = frontmatter.match(/url:\s*["']?([^"'\n]*)["']?/);
 
                         return {
                             id: filename,
                             title: titleMatch ? titleMatch[1].trim() : filename.replace('.md', ''),
+                            url: urlMatch ? urlMatch[1].trim() : null,
                             date: dateMatch ? new Date(dateMatch[1]) : new Date(),
                             lastEdited: dateMatch ? new Date(dateMatch[1]) : new Date(),
                             tags: tagsMatch
@@ -186,7 +188,7 @@ const DiaryViewer = () => {
             <header className="sticky top-0 z-40 backdrop-blur-md bg-opacity-90 shadow-sm">
                 <div className="max-w-6xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between mb-4">
-                        <h1 className="text-3xl font-bold">Shishir Dey.</h1>
+                        <h1 className="text-2xl font-bold">Shishir Dey.</h1>
                         <div className="flex items-center gap-2">
                             <a
                                 href="https://shishirdey.com/contact"
@@ -242,28 +244,46 @@ const DiaryViewer = () => {
                                 }`}
                         >
                             <div className="p-6">
-                                <div className="flex items-start justify-between mb-4">
-                                    <h2 className="text-xl font-semibold line-clamp-2">
-                                        {note.title}
-                                    </h2>
+                                <div className="flex items-start justify-between mb-2">
+                                    <div>
+                                        <h2 className="text-lg font-semibold line-clamp-2 mb-0">
+                                            {note.title}
+                                        </h2>
+                                        {note.url && (
+                                            <a
+                                                href={note.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className={`inline-flex items-center text-xs tracking-wide font-semibold no-underline -mt-1
+                                                    ${darkMode
+                                                        ? 'text-amber-300 hover:text-amber-200'
+                                                        : 'text-amber-600 hover:text-amber-700'
+                                                    } transition-colors duration-200`}
+                                            >
+                                                <span className="font-['Inter']">View Project</span>
+                                                <span className="ml-1 text-[10px]">↗</span>
+                                            </a>
+                                        )}
+                                    </div>
                                     {note.isPinned && (
                                         <Pin className="text-blue-500 h-5 w-5 flex-shrink-0 ml-2" />
                                     )}
                                 </div>
-                                <p className={`line-clamp-3 mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'
+                                <p className={`text-sm line-clamp-3 mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'
                                     }`}>
                                     {note.content}
                                 </p>
-                                <div className={`flex items-center text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                                <div className={`flex items-center text-xs mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'
                                     }`}>
-                                    <Clock className="h-4 w-4 mr-1" />
+                                    <Clock className="h-3 w-3 mr-1" />
                                     {formatDate(note.lastEdited)}
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {note.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${darkMode
+                                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${darkMode
                                                 ? 'bg-blue-900 text-blue-200'
                                                 : 'bg-blue-100 text-blue-800'
                                                 }`}
@@ -295,13 +315,32 @@ const DiaryViewer = () => {
                             }`}>
                             <div className="p-6">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className="flex items-start flex-1">
-                                        <h2 className="text-2xl font-semibold mr-3">
-                                            {selectedNote.title}
-                                        </h2>
-                                        {selectedNote.isPinned && (
-                                            <Pin className="text-blue-500 h-5 w-5 flex-shrink-0" />
-                                        )}
+                                    <div className="flex-1">
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h2 className="text-xl font-semibold mr-3 mb-0">
+                                                    {selectedNote.title}
+                                                </h2>
+                                                {selectedNote.url && (
+                                                    <a
+                                                        href={selectedNote.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className={`inline-flex items-center text-xs tracking-wide font-semibold no-underline -mt-1
+                                                            ${darkMode
+                                                                ? 'text-amber-300 hover:text-amber-200'
+                                                                : 'text-amber-600 hover:text-amber-700'
+                                                            } transition-colors duration-200`}
+                                                    >
+                                                        <span className="font-['Inter']">View Project</span>
+                                                        <span className="ml-1 text-[10px]">↗</span>
+                                                    </a>
+                                                )}
+                                            </div>
+                                            {selectedNote.isPinned && (
+                                                <Pin className="text-blue-500 h-5 w-5 flex-shrink-0" />
+                                            )}
+                                        </div>
                                     </div>
                                     <button
                                         onClick={closeModal}
@@ -311,13 +350,13 @@ const DiaryViewer = () => {
                                         <X className="h-6 w-6" />
                                     </button>
                                 </div>
-                                <p className={`whitespace-pre-wrap mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'
+                                <p className={`text-sm whitespace-pre-wrap mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'
                                     }`}>
                                     {selectedNote.content}
                                 </p>
-                                <div className={`flex items-center text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                                <div className={`flex items-center text-xs mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'
                                     }`}>
-                                    <Clock className="h-4 w-4 mr-1" />
+                                    <Clock className="h-3 w-3 mr-1" />
                                     {formatDate(selectedNote.lastEdited)}
                                 </div>
                                 <div className="flex items-center flex-wrap gap-2">
@@ -341,7 +380,7 @@ const DiaryViewer = () => {
                 </div>
             )}
 
-            <footer className={`text-center py-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            <footer className={`text-center py-4 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 <p>Copyright &copy; {new Date().getFullYear()} Shishir Dey - All rights reserved.</p>
             </footer>
         </div>
