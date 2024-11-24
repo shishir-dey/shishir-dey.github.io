@@ -259,9 +259,9 @@ const DiaryViewer = () => {
                                                     ${darkMode
                                                         ? 'text-amber-300 hover:text-amber-200'
                                                         : 'text-amber-600 hover:text-amber-700'
-                                                    } transition-colors duration-200`}
+                                                    } transition-colors duration-200 font-sans`}
                                             >
-                                                <span className="font-['Inter']">View Project</span>
+                                                <span>View</span>
                                                 <span className="ml-1 text-[10px]">↗</span>
                                             </a>
                                         )}
@@ -330,9 +330,9 @@ const DiaryViewer = () => {
                                                             ${darkMode
                                                                 ? 'text-amber-300 hover:text-amber-200'
                                                                 : 'text-amber-600 hover:text-amber-700'
-                                                            } transition-colors duration-200`}
+                                                            } transition-colors duration-200 font-sans`}
                                                     >
-                                                        <span className="font-['Inter']">View Project</span>
+                                                        <span>View</span>
                                                         <span className="ml-1 text-[10px]">↗</span>
                                                     </a>
                                                 )}
