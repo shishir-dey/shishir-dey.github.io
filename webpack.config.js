@@ -31,12 +31,20 @@ module.exports = {
       template: './public/index.html', // HTML template
       filename: 'index.html'
     }),
-    // Add CopyWebpackPlugin to copy markdown files
+    // Add CopyWebpackPlugin to copy markdown files and static files
     new CopyWebpackPlugin({
       patterns: [
         {
           from: path.resolve(__dirname, './public/content/notes'), // Source directory for markdown
           to: path.resolve(__dirname, 'build/content/notes')  // Destination directory in the build folder
+        },
+        {
+          from: path.resolve(__dirname, './public/robots.txt'),
+          to: path.resolve(__dirname, 'build')
+        },
+        {
+          from: path.resolve(__dirname, './public/sitemap.xml'),
+          to: path.resolve(__dirname, 'build')
         }
       ]
     })
