@@ -5,4 +5,4 @@ tags: ["super hard thoughts"]
 pinned: false
 ---
 
-Evolution is about adapting to one's environment, not progressing into a higher species; otherwise, every animal would have evolved into humans.
+Evolution is about adapting to one's environment, not progressing into a higher species; otherwise, every animal would have evolved into a human.
