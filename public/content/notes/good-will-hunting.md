@@ -1,7 +1,7 @@
 ---
 title: ""
 date: "2023-04-09T00:00:00"
-tags: ["quote"]
+tags: ["movie", "quote"]
 pinned: false
 ---
 
