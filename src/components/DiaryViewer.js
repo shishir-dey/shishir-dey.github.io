@@ -210,7 +210,7 @@ const DiaryViewer = () => {
                     </div>
 
                     {/* Tag Filter */}
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex overflow-x-auto gap-2 mb-4">
                         {allTags.map((tag) => (
                             <button
                                 key={tag}
