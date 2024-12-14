@@ -351,7 +351,7 @@ const DiaryViewer = () => {
                                     </button>
                                 </div>
                                 <p className={`text-base md:text-base whitespace-pre-wrap mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'
-                                    }`} style={{ lineHeight: '1.6', padding: '0 1rem' }}>
+                                    }`} style={{ lineHeight: '1.6', padding: '0 0.25rem' }}>
                                     {selectedNote.content}
                                 </p>
                                 <div className={`flex items-center text-sm md:text-xs mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'
