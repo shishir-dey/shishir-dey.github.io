@@ -45,6 +45,10 @@ module.exports = {
         {
           from: path.resolve(__dirname, './public/sitemap.xml'),
           to: path.resolve(__dirname, 'build')
+        },
+        {
+          from: path.resolve(__dirname, './public/logo.png'),
+          to: path.resolve(__dirname, 'build')
         }
       ]
     })
