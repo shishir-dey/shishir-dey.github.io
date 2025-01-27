@@ -185,7 +185,7 @@ const DiaryViewer = () => {
         <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-800'
             }`}>
             {/* Header */}
-            <header className="sticky top-0 z-40 backdrop-blur-md bg-opacity-90 shadow-sm">
+            <header className="sticky top-0 z-40 backdrop-blur-md bg-opacity-90 shadow-xs">
                 <div className="max-w-6xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between mb-4">
                         <h1 className="text-2xl md:text-2xl font-bold">Shishir Dey.</h1>
@@ -267,7 +267,7 @@ const DiaryViewer = () => {
                                         )}
                                     </div>
                                     {note.isPinned && (
-                                        <Pin className="text-blue-500 h-5 w-5 flex-shrink-0 ml-2" />
+                                        <Pin className="text-blue-500 h-5 w-5 shrink-0 ml-2" />
                                     )}
                                 </div>
                                 <p className={`text-base md:text-sm line-clamp-3 mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'
@@ -338,7 +338,7 @@ const DiaryViewer = () => {
                                                 )}
                                             </div>
                                             {selectedNote.isPinned && (
-                                                <Pin className="text-blue-500 h-5 w-5 flex-shrink-0" />
+                                                <Pin className="text-blue-500 h-5 w-5 shrink-0" />
                                             )}
                                         </div>
                                     </div>
