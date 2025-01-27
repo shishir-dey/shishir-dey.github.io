@@ -305,7 +305,7 @@ const DiaryViewer = () => {
                         }`}
                     onClick={closeModal}
                 >
-                    <div className="fixed inset-0 bg-black bg-opacity-50" />
+                    <div className="fixed inset-0 bg-black opacity-65" />
                     <div
                         className={`relative w-full max-w-2xl transform transition-all duration-200 ${modalVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                             }`}
