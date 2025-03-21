@@ -42,8 +42,8 @@ const DiaryViewer = () => {
     useEffect(() => {
         const loadNotes = async () => {
             try {
-                const response = await fetch('/content/notes/notes.json');
-                if (!response.ok) throw new Error('Failed to fetch notes.json');
+                const response = await fetch('/content/notes/metadata.json');
+                if (!response.ok) throw new Error('Failed to fetch notes/metadata.json');
                 const files = await response.json();
 
                 const notesData = await Promise.all(
