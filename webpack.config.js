@@ -35,8 +35,12 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, './public/content/notes'), // Source directory for markdown
-          to: path.resolve(__dirname, 'build/content/notes')  // Destination directory in the build folder
+          from: path.resolve(__dirname, './public/content/notes'),
+          to: path.resolve(__dirname, 'build/content/notes')
+        },
+        {
+          from: path.resolve(__dirname, './public/content/photos'),
+          to: path.resolve(__dirname, 'build/content/photos')
         },
         {
           from: path.resolve(__dirname, './public/robots.txt'),
