@@ -4,10 +4,19 @@ import { Pin, X, Tag, Clock, Moon, Sun, Search, Mail } from 'lucide-react';
 const DiaryViewer = () => {
     const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        // Initialize from localStorage, default to false if not set
+        const savedTheme = localStorage.getItem('darkMode');
+        return savedTheme === 'true';
+    });
     const [selectedTags, setSelectedTags] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    // Save darkMode to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('darkMode', darkMode);
+    }, [darkMode]);
 
     // Get all unique tags
     const allTags = Array.from(new Set(notes.flatMap(note => note.tags)));
