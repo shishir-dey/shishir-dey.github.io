@@ -2,7 +2,7 @@ import React from 'react';
 
 const TagFilter = ({ allTags, selectedTags, setSelectedTags, darkMode }) => {
     return (
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4 pt-4">
             <div
                 className="flex overflow-x-auto gap-2 mb-4"
                 style={{
