@@ -4,7 +4,7 @@ const TagFilter = ({ allTags, selectedTags, setSelectedTags, darkMode }) => {
     return (
         <div className="max-w-6xl mx-auto px-4 pt-4">
             <div
-                className="flex overflow-x-auto gap-2 mb-4"
+                className="flex overflow-x-auto gap-2 mb-2"
                 style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
