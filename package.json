@@ -30,7 +30,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "babel-loader": "^10.0.0",
     "html-webpack-plugin": "^5.6.3",
-    "lucide-react": "^0.528.0",
+    "lucide-react": "^0.536.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "webpack": "^5.100.2",
