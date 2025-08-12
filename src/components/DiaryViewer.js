@@ -41,19 +41,42 @@ const DiaryViewer = () => {
             });
     }, [notes, selectedTags]);
 
-    const closeModal = useCallback(() => {
+    const closeModal = useCallback(options => {
+        const fromPopState = options && options.fromPopState === true;
         setModalVisible(false);
         setTimeout(() => {
             setSelectedNote(null);
             document.body.style.overflow = '';
         }, 200);
+        // If this close wasn't triggered by a browser back (popstate),
+        // go back one step to consume the history entry we pushed when opening the modal.
+        if (!fromPopState) {
+            try {
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            } catch (_) {
+                // noop
+            }
+        }
     }, []);
 
-    const openModal = useCallback(note => {
-        setSelectedNote(note);
-        setModalVisible(true);
-        document.body.style.overflow = 'hidden';
-    }, []);
+    const openModal = useCallback(
+        note => {
+            setSelectedNote(note);
+            setModalVisible(true);
+            document.body.style.overflow = 'hidden';
+            // Push a history state so that the browser back button closes the modal first
+            try {
+                if (!modalVisible) {
+                    window.history.pushState({ modalOpen: true }, '');
+                }
+            } catch (_) {
+                // noop
+            }
+        },
+        [modalVisible]
+    );
 
     // Load notes effect
     useEffect(() => {
@@ -186,6 +209,17 @@ const DiaryViewer = () => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [selectedNote, filteredNotes, closeModal]);
+
+    // Close modal on browser back button (popstate)
+    useEffect(() => {
+        const handlePopState = () => {
+            if (modalVisible) {
+                closeModal({ fromPopState: true });
+            }
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [modalVisible, closeModal]);
 
     // Format date to be more readable
     const formatDate = dateString => {
