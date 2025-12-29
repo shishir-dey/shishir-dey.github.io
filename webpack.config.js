@@ -53,6 +53,10 @@ module.exports = {
         {
           from: path.resolve(__dirname, './public/logo.png'),
           to: path.resolve(__dirname, 'build')
+        },
+        {
+          from: path.resolve(__dirname, './public/BingSiteAuth.xml'),
+          to: path.resolve(__dirname, 'build')
         }
       ]
     })
