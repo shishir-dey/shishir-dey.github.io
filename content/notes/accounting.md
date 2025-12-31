@@ -1,6 +1,6 @@
 ---
 title: ""
-date: "2024-12-31T00:00:00"
+date: "2025-12-31T00:00:00"
 tags: ["super hard thoughts"]
 pinned: false
 ---
