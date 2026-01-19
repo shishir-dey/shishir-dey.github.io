@@ -48,7 +48,7 @@
     "prettier": "^3.7.4",
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.1.14",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.3"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,md}": [
