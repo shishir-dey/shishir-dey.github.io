@@ -273,7 +273,7 @@ body,
     backdrop-filter: blur(calc(var(--glass-blur) + 8px)) saturate(1.4);
     -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 8px)) saturate(1.4);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .glass-modal::before {
