@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useRef,
+} from 'react';
 import Header from './Header';
 import TagFilter from './TagFilter';
 import NotesGrid from './NotesGrid';
@@ -17,6 +23,8 @@ const DiaryViewer = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const scrollRef = useRef(null);
+    const contentRef = useRef(null);
 
     // Save darkMode to localStorage whenever it changes
     useEffect(() => {
@@ -41,30 +49,44 @@ const DiaryViewer = () => {
             });
     }, [notes, selectedTags]);
 
-    const closeModal = useCallback(options => {
-        const fromPopState = options && options.fromPopState === true;
-        setModalVisible(false);
-        setTimeout(() => {
-            setSelectedNote(null);
-            document.body.style.overflow = '';
-        }, 200);
-        // If this close wasn't triggered by a browser back (popstate),
-        // go back one step to consume the history entry we pushed when opening the modal.
-        if (!fromPopState) {
-            try {
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            } catch (_) {
-                // noop
-            }
-        }
+    const setScrollLocked = useCallback(locked => {
+        const container = scrollRef.current;
+        if (!container) return;
+        container.style.overflowY = locked ? 'hidden' : '';
     }, []);
+
+    const closeModal = useCallback(
+        options => {
+            const fromPopState = options && options.fromPopState === true;
+            setModalVisible(false);
+            setTimeout(() => {
+                setSelectedNote(null);
+                setScrollLocked(false);
+                document.body.style.overflow = '';
+            }, 200);
+            // If this close wasn't triggered by a browser back (popstate),
+            // go back one step to consume the history entry we pushed when opening the modal.
+            if (!fromPopState) {
+                try {
+                    if (
+                        window.history.state &&
+                        window.history.state.modalOpen
+                    ) {
+                        window.history.back();
+                    }
+                } catch (_) {
+                    // noop
+                }
+            }
+        },
+        [setScrollLocked]
+    );
 
     const openModal = useCallback(
         note => {
             setSelectedNote(note);
             setModalVisible(true);
+            setScrollLocked(true);
             document.body.style.overflow = 'hidden';
             // Push a history state so that the browser back button closes the modal first
             try {
@@ -75,8 +97,131 @@ const DiaryViewer = () => {
                 // noop
             }
         },
-        [modalVisible]
+        [modalVisible, setScrollLocked]
     );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const isCoarsePointer =
+            window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        if (!isCoarsePointer) return;
+
+        const container = scrollRef.current;
+        const content = contentRef.current;
+        if (!container || !content) return;
+
+        let startY = 0;
+        let startX = 0;
+        let isDragging = false;
+        let isOverscrolling = false;
+        let rafId = null;
+        let pendingOffset = 0;
+        const maxPull = 28;
+        const resistance = 0.18;
+        const pullThreshold = 18;
+
+        const applyOffset = offset => {
+            pendingOffset = offset;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                content.style.transform = `translateY(${pendingOffset}px)`;
+            });
+        };
+
+        const clearOffset = () => {
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+            content.style.transform = '';
+            content.style.transition = '';
+            content.style.willChange = '';
+        };
+
+        const activateOverscroll = () => {
+            if (!isOverscrolling) {
+                isOverscrolling = true;
+                content.style.willChange = 'transform';
+            }
+        };
+
+        const handleTouchStart = event => {
+            if (modalVisible) return;
+            if (event.touches.length !== 1) return;
+            isDragging = true;
+            isOverscrolling = false;
+            startY = event.touches[0].clientY;
+            startX = event.touches[0].clientX;
+        };
+
+        const handleTouchMove = event => {
+            if (!isDragging || modalVisible) return;
+            const currentY = event.touches[0].clientY;
+            const currentX = event.touches[0].clientX;
+            const deltaY = currentY - startY;
+            const deltaX = currentX - startX;
+
+            if (Math.abs(deltaY) < Math.abs(deltaX)) {
+                return;
+            }
+
+            const atTop = container.scrollTop <= 0;
+            const atBottom =
+                container.scrollTop + container.clientHeight >=
+                container.scrollHeight - 1;
+
+            if ((deltaY > 0 && atTop) || (deltaY < 0 && atBottom)) {
+                if (Math.abs(deltaY) < pullThreshold) {
+                    return;
+                }
+                activateOverscroll();
+                const damped = Math.max(
+                    -maxPull,
+                    Math.min(maxPull, deltaY * resistance)
+                );
+                applyOffset(damped);
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
+            }
+        };
+
+        const handleTouchEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            if (!isOverscrolling) {
+                clearOffset();
+                return;
+            }
+
+            content.style.transition =
+                'transform 180ms cubic-bezier(0.16, 1, 0.3, 1)';
+            applyOffset(0);
+            const handleTransitionEnd = () => {
+                content.removeEventListener(
+                    'transitionend',
+                    handleTransitionEnd
+                );
+                clearOffset();
+            };
+            content.addEventListener('transitionend', handleTransitionEnd);
+        };
+
+        container.addEventListener('touchstart', handleTouchStart, {
+            passive: true,
+        });
+        container.addEventListener('touchmove', handleTouchMove, {
+            passive: false,
+        });
+        container.addEventListener('touchend', handleTouchEnd);
+        container.addEventListener('touchcancel', handleTouchEnd);
+
+        return () => {
+            container.removeEventListener('touchstart', handleTouchStart);
+            container.removeEventListener('touchmove', handleTouchMove);
+            container.removeEventListener('touchend', handleTouchEnd);
+            container.removeEventListener('touchcancel', handleTouchEnd);
+            clearOffset();
+        };
+    }, [modalVisible]);
 
     // Load notes effect
     useEffect(() => {
@@ -249,40 +394,45 @@ const DiaryViewer = () => {
     };
 
     if (isLoading) {
-        return <LoadingSpinner />;
+        return (
+            <div
+                className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}
+            >
+                <div className="app-content">
+                    <LoadingSpinner />
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div
-            className={`min-h-screen transition-colors duration-200 ${
-                darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-800'
-            }`}
-        >
-            <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+        <div className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}>
+            <div className="app-scroll" ref={scrollRef}>
+                <div className="app-content" ref={contentRef}>
+                    <Header darkMode={darkMode} setDarkMode={setDarkMode} />
 
-            <TagFilter
-                allTags={allTags}
-                selectedTags={selectedTags}
-                setSelectedTags={setSelectedTags}
-                darkMode={darkMode}
-            />
+                    <TagFilter
+                        allTags={allTags}
+                        selectedTags={selectedTags}
+                        setSelectedTags={setSelectedTags}
+                    />
 
-            <NotesGrid
-                filteredNotes={filteredNotes}
-                darkMode={darkMode}
-                formatDate={formatDate}
-                onNoteClick={openModal}
-            />
+                    <NotesGrid
+                        filteredNotes={filteredNotes}
+                        formatDate={formatDate}
+                        onNoteClick={openModal}
+                    />
+
+                    <Footer />
+                </div>
+            </div>
 
             <NoteModal
                 selectedNote={selectedNote}
                 modalVisible={modalVisible}
-                darkMode={darkMode}
                 formatDate={formatDate}
                 onClose={closeModal}
             />
-
-            <Footer darkMode={darkMode} />
         </div>
     );
 };
