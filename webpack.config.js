@@ -39,10 +39,6 @@ module.exports = {
           to: path.resolve(__dirname, 'build/content/notes')
         },
         {
-          from: path.resolve(__dirname, './public/content/photos'),
-          to: path.resolve(__dirname, 'build/content/photos')
-        },
-        {
           from: path.resolve(__dirname, './public/robots.txt'),
           to: path.resolve(__dirname, 'build')
         },
