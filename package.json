@@ -47,7 +47,7 @@
     "postcss-loader": "^8.2.1",
     "prettier": "^3.8.1",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^4.2.1",
+    "tailwindcss": "^4.2.2",
     "webpack-dev-server": "^5.2.3"
   },
   "lint-staged": {
