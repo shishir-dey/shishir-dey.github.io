@@ -5,8 +5,7 @@ A repository for my diary, where I share my thoughts, experiences, and reflectio
 ## Tech Stack
 
 - **React** - Frontend framework for building the user interface
-- **Webpack** - Module bundler for building and serving the application
-- **Babel** - JavaScript transpiler for modern JS features
+- **Vite** - Development server and build tool
 - **Tailwind CSS** - Utility-first CSS framework for styling
 - **Lucide React** - Beautiful icon library
 - **PostCSS** - CSS processing tool
