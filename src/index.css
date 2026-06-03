@@ -54,6 +54,7 @@
         --chip-text-active: #0f172a;
         --tag-pill-bg: rgba(37, 99, 235, 0.16);
         --tag-pill-text: #1e40af;
+        --modal-bg: #ffffff;
         --modal-backdrop: rgba(15, 23, 42, 0.45);
         --close-bg: #ff4d4f;
         --close-border: rgba(148, 163, 184, 0.35);
@@ -101,6 +102,7 @@
         --chip-text-active: #eff6ff;
         --tag-pill-bg: rgba(96, 165, 250, 0.2);
         --tag-pill-text: #dbeafe;
+        --modal-bg: #0f172a;
         --modal-backdrop: rgba(2, 6, 23, 0.72);
         --close-bg: #ff4d4f;
         --close-border: rgba(15, 23, 42, 0.45);
@@ -266,7 +268,7 @@ body,
 }
 
 .glass-modal {
-    background: var(--glass-bg-strong);
+    background: var(--modal-bg);
     border: 1px solid var(--glass-border-strong);
     border-radius: 24px;
     box-shadow: var(--glass-shadow);
