@@ -16,8 +16,11 @@ const DiaryViewer = () => {
     const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
     const [darkMode, setDarkMode] = useState(() => {
-        // Initialize from localStorage, default to false if not set
         const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === null) {
+            const hour = new Date().getHours();
+            return hour < 6 || hour >= 18;
+        }
         return savedTheme === 'true';
     });
     const [selectedTags, setSelectedTags] = useState([]);
