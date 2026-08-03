@@ -34,6 +34,7 @@
                 #d7e6f7 100%
             );
         --text-primary: #0f172a;
+        --safari-tint: #f3e4c5;
         --text-secondary: #334155;
         --text-tertiary: #64748b;
         --accent: #2563eb;
@@ -85,9 +86,10 @@
                 #172c45 0%,
                 #254666 44%,
                 #345f82 76%,
-                #9fbddd 100%
+                #172c45 100%
             );
         --text-primary: #e2e8f0;
+        --safari-tint: #254666;
         --text-secondary: #cbd5e1;
         --text-tertiary: #94a3b8;
         --accent: #60a5fa;
@@ -131,10 +133,23 @@ body,
     height: 100%;
 }
 
+html,
+body {
+    background-color: #f3e4c5;
+}
+
+@media (prefers-color-scheme: dark) {
+    html,
+    body {
+        background-color: #254666;
+    }
+}
+
 .app-shell {
     min-height: 100vh;
     color: var(--text-primary);
-    background:
+    background-color: var(--safari-tint);
+    background-image:
         radial-gradient(
             circle at 18% 10%,
             rgba(255, 248, 228, 0.82) 0%,
@@ -152,6 +167,26 @@ body,
     overflow-x: hidden;
     transition: color 0.5s ease;
     font-family: var(--font-sans);
+}
+
+.safari-tint-sampler {
+    position: fixed;
+    left: 0;
+    z-index: 2147483647;
+    width: 100%;
+    min-width: 100%;
+    height: 12px;
+    min-height: 12px;
+    pointer-events: none;
+    background-color: var(--safari-tint);
+}
+
+.safari-tint-sampler--top {
+    top: -8px;
+}
+
+.safari-tint-sampler--bottom {
+    bottom: -8px;
 }
 
 .app-scroll {
@@ -196,7 +231,7 @@ body,
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background:
+    background-image:
         radial-gradient(
             circle at 86% 14%,
             rgba(215, 230, 247, 0.44) 0%,
@@ -208,7 +243,7 @@ body,
             #172c45 0%,
             #254666 44%,
             #345f82 76%,
-            #9fbddd 100%
+            #172c45 100%
         );
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -216,6 +251,54 @@ body,
 
 .theme-dark.app-shell::before {
     opacity: 1;
+}
+
+@media (max-width: 767px) {
+    .app-shell {
+        background-image:
+            linear-gradient(
+                to bottom,
+                var(--safari-tint) 0,
+                rgba(243, 228, 197, 0.72) 48px,
+                rgba(243, 228, 197, 0) 112px
+            ),
+            radial-gradient(
+                circle at 18% 10%,
+                rgba(255, 248, 228, 0.82) 0%,
+                rgba(215, 161, 72, 0.2) 34%,
+                transparent 56%
+            ),
+            linear-gradient(
+                155deg,
+                #fbf7ef 0%,
+                #f3e4c5 44%,
+                #f1eadc 68%,
+                #d7e6f7 100%
+            );
+    }
+
+    .app-shell::before {
+        background-image:
+            linear-gradient(
+                to bottom,
+                var(--safari-tint) 0,
+                rgba(37, 70, 102, 0.72) 48px,
+                rgba(37, 70, 102, 0) 112px
+            ),
+            radial-gradient(
+                circle at 86% 14%,
+                rgba(215, 230, 247, 0.44) 0%,
+                rgba(137, 176, 214, 0.24) 30%,
+                transparent 54%
+            ),
+            linear-gradient(
+                155deg,
+                #172c45 0%,
+                #254666 44%,
+                #345f82 76%,
+                #172c45 100%
+            );
+    }
 }
 
 .app-shell::after {

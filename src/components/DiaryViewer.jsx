@@ -12,6 +12,22 @@ import NoteModal from './NoteModal';
 import LoadingSpinner from './LoadingSpinner';
 import Footer from './Footer';
 
+const LIGHT_THEME_COLOR = '#f3e4c5';
+const DARK_THEME_COLOR = '#254666';
+
+const SafariTintLayer = () => (
+    <>
+        <div
+            className="safari-tint-sampler safari-tint-sampler--top"
+            aria-hidden="true"
+        />
+        <div
+            className="safari-tint-sampler safari-tint-sampler--bottom"
+            aria-hidden="true"
+        />
+    </>
+);
+
 const DiaryViewer = () => {
     const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
@@ -29,9 +45,16 @@ const DiaryViewer = () => {
     const scrollRef = useRef(null);
     const contentRef = useRef(null);
 
-    // Save darkMode to localStorage whenever it changes
+    // Keep Safari 26+ browser chrome tint in sync with the app theme.
     useEffect(() => {
         localStorage.setItem('darkMode', darkMode);
+        const themeColor = darkMode ? DARK_THEME_COLOR : LIGHT_THEME_COLOR;
+        const colorScheme = darkMode ? 'dark' : 'light';
+
+        document.documentElement.style.backgroundColor = themeColor;
+        document.documentElement.style.colorScheme = colorScheme;
+        document.body.style.backgroundColor = themeColor;
+        document.body.style.colorScheme = colorScheme;
     }, [darkMode]);
 
     // Get all unique tags
@@ -401,6 +424,7 @@ const DiaryViewer = () => {
             <div
                 className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}
             >
+                <SafariTintLayer />
                 <div className="app-content">
                     <LoadingSpinner />
                 </div>
@@ -410,6 +434,7 @@ const DiaryViewer = () => {
 
     return (
         <div className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}>
+            <SafariTintLayer />
             <div className="app-scroll" ref={scrollRef}>
                 <div className="app-content" ref={contentRef}>
                     <Header darkMode={darkMode} setDarkMode={setDarkMode} />
