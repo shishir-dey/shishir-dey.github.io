@@ -21,7 +21,7 @@ const TagFilter = ({ allTags, selectedTags, setSelectedTags }) => {
                                         : [...prev, tag]
                                 )
                             }
-                            className={`glass-chip inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold tracking-wide whitespace-nowrap ${
+                            className={`glass-chip inline-flex items-center px-3 py-1.5 rounded-full text-sm font-normal tracking-wide whitespace-nowrap ${
                                 selectedTags.includes(tag) ? 'active' : ''
                             }`}
                             aria-pressed={selectedTags.includes(tag)}
