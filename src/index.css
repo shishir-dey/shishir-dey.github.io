@@ -31,7 +31,7 @@
                 #fbf7ef 0%,
                 #f3e4c5 44%,
                 #f1eadc 68%,
-                #d7e6f7 100%
+                #ffffff 100%
             );
         --text-primary: #0f172a;
         --safari-tint: #f3e4c5;
@@ -54,7 +54,7 @@
         --glass-button-bg: #f7f0e3;
         --glass-button-hover: #efe3cf;
         --glass-rail-bg: #f4ecdc;
-        --chip-bg: #f3ead8;
+        --chip-bg: var(--glass-bg);
         --chip-bg-active: rgba(37, 99, 235, 0.14);
         --chip-text: #1e293b;
         --chip-text-active: #0f172a;
@@ -161,7 +161,7 @@ body {
             #fbf7ef 0%,
             #f3e4c5 44%,
             #f1eadc 68%,
-            #d7e6f7 100%
+            #ffffff 100%
         );
     position: relative;
     overflow-x: hidden;
@@ -273,7 +273,7 @@ body {
                 #fbf7ef 0%,
                 #f3e4c5 44%,
                 #f1eadc 68%,
-                #d7e6f7 100%
+                #ffffff 100%
             );
     }
 
