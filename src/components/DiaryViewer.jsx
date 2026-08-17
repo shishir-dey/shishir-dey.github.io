@@ -1,6 +1,7 @@
 import React, {
     useState,
     useEffect,
+    useLayoutEffect,
     useCallback,
     useMemo,
     useRef,
@@ -13,7 +14,9 @@ import LoadingSpinner from './LoadingSpinner';
 import Footer from './Footer';
 
 const LIGHT_THEME_COLOR = '#f3e4c5';
+const LIGHT_MODAL_THEME_COLOR = '#8c887f';
 const DARK_THEME_COLOR = '#254666';
+const DARK_MODAL_THEME_COLOR = '#152b43';
 
 const SafariTintLayer = () => (
     <>
@@ -46,16 +49,22 @@ const DiaryViewer = () => {
     const contentRef = useRef(null);
 
     // Keep Safari 26+ browser chrome tint in sync with the app theme.
-    useEffect(() => {
+    useLayoutEffect(() => {
         localStorage.setItem('darkMode', darkMode);
-        const themeColor = darkMode ? DARK_THEME_COLOR : LIGHT_THEME_COLOR;
+        const themeColor = modalVisible
+            ? darkMode
+                ? DARK_MODAL_THEME_COLOR
+                : LIGHT_MODAL_THEME_COLOR
+            : darkMode
+              ? DARK_THEME_COLOR
+              : LIGHT_THEME_COLOR;
         const colorScheme = darkMode ? 'dark' : 'light';
 
         document.documentElement.style.backgroundColor = themeColor;
         document.documentElement.style.colorScheme = colorScheme;
         document.body.style.backgroundColor = themeColor;
         document.body.style.colorScheme = colorScheme;
-    }, [darkMode]);
+    }, [darkMode, modalVisible]);
 
     // Get all unique tags
     const allTags = Array.from(new Set(notes.flatMap(note => note.tags)));
@@ -433,7 +442,11 @@ const DiaryViewer = () => {
     }
 
     return (
-        <div className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'}`}>
+        <div
+            className={`app-shell ${darkMode ? 'theme-dark' : 'theme-light'} ${
+                modalVisible ? 'modal-open' : ''
+            }`}
+        >
             <SafariTintLayer />
             <div className="app-scroll" ref={scrollRef}>
                 <div className="app-content" ref={contentRef}>

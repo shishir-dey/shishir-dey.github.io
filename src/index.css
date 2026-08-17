@@ -35,6 +35,7 @@
             );
         --text-primary: #0f172a;
         --safari-tint: #f3e4c5;
+        --safari-tint-modal: #8c887f;
         --text-secondary: #334155;
         --text-tertiary: #64748b;
         --accent: #2563eb;
@@ -90,6 +91,7 @@
             );
         --text-primary: #e2e8f0;
         --safari-tint: #254666;
+        --safari-tint-modal: #152b43;
         --text-secondary: #cbd5e1;
         --text-tertiary: #94a3b8;
         --accent: #60a5fa;
@@ -179,6 +181,10 @@ body {
     min-height: 12px;
     pointer-events: none;
     background-color: var(--safari-tint);
+}
+
+.modal-open .safari-tint-sampler {
+    background-color: var(--safari-tint-modal);
 }
 
 .safari-tint-sampler--top {
