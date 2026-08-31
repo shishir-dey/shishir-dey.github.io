@@ -13,10 +13,10 @@ import NoteModal from './NoteModal';
 import LoadingSpinner from './LoadingSpinner';
 import Footer from './Footer';
 
-const LIGHT_THEME_COLOR = '#f3e4c5';
-const LIGHT_MODAL_THEME_COLOR = '#8c887f';
-const DARK_THEME_COLOR = '#254666';
-const DARK_MODAL_THEME_COLOR = '#152b43';
+const LIGHT_THEME_COLOR = '#bfe0e8';
+const LIGHT_MODAL_THEME_COLOR = '#2b5346';
+const DARK_THEME_COLOR = '#5c3140';
+const DARK_MODAL_THEME_COLOR = '#241f27';
 
 const SafariTintLayer = () => (
     <>
