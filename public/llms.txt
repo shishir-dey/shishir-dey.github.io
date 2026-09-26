@@ -1,0 +1,69 @@
+# Shishir Dey
+
+> Personal engineering site for Shishir Dey — embedded systems and Rust engineer working across firmware, power electronics, PCB design, RTL, and developer tooling. This page indexes documentation and demo sites for open-source libraries, specifications, tools, firmware templates, PCB designs, RTL projects, CAD models, and side projects.
+
+## About
+
+Hi, I'm Shishir, an engineer based in India with a love for technology, art, and understanding how things really work. I enjoy digging into problems from first principles, especially when there's something practical to build, fix, or figure out. I'm rarely satisfied with neat explanations that gloss over the messy details. Whether I'm exploring engineering, economics, or something completely unexpected, I like looking at the underlying systems, incentives, and trade-offs. I'm fairly reserved at first, but I enjoy conversations with substance and tend to come alive when there's something interesting to explore. I'm happiest when I'm learning, building, and chasing down questions that refuse to leave me alone.
+
+## Socials
+
+- [GitHub](https://github.com/shishir-dey)
+- [LinkedIn](https://www.linkedin.com/in/shishir-dey/)
+- [Personal site](https://shishirdey.com)
+- [crates.io](https://crates.io/users/shishir-dey)
+- [Crunchbase](https://www.crunchbase.com/person/shishir-dey)
+- [Wikidata](https://www.wikidata.org/wiki/Q111048439)
+- [Product Hunt](https://www.producthunt.com/@shishir_dey)
+- [Udemy](https://www.udemy.com/user/shishir-dey/)
+- [YouTube](https://www.youtube.com/@shishir-dey)
+- [Telegram](https://t.me/shishir_dey)
+- [Pinterest](https://in.pinterest.com/shishir_dey/)
+
+## Journal
+
+- [Journal](https://shishir-dey.github.io/): Main page journal entries, tagged personal, super hard thoughts, movie, dialogue, quote, monologue, idiom, hindi, poetry.
+
+## Libraries
+
+- [libautomotive](https://shishir-dey.github.io/libautomotive/): Rust automotive protocols (OBD-II, J1939, LIN, UDS).
+- [libpower](https://shishir-dey.github.io/libpower/): Rust power electronics algorithms for embedded systems.
+- [libiot](https://shishir-dey.github.io/libiot/): Rust SDK for IoT cloud connectivity.
+- [libmodbuzz](https://shishir-dey.github.io/libmodbuzz/): Rust implementation of the Modbus protocol.
+- [spi-flash](https://shishir-dey.github.io/spi-flash/): SPI flash driver for Winbond W25Q and similar devices.
+
+## Specifications
+
+- [DatasheetXML](https://shishir-dey.github.io/DatasheetXML/): A machine-readable format for electronic component datasheets.
+
+## Tools
+
+- [KiView](https://shishir-dey.github.io/KiView/): KiCad PCB viewer.
+- [ngspiceX](https://shishir-dey.github.io/ngspiceX/): A browser-based SPICE circuit simulator.
+- [OpenDFM](https://shishir-dey.github.io/OpenDFM/): A private, browser-based Gerber design-for-manufacturing checker.
+
+## Firmware
+
+- [stm32-devops-template](https://shishir-dey.github.io/stm32-devops-template/): DevOps practices showcase for microcontroller projects.
+- [stm32-rust-template](https://shishir-dey.github.io/stm32-rust-template/): Bare-metal Rust template for STM32 microcontrollers.
+
+## PCB
+
+- [pcb-dev-dsPIC30F3011](https://shishir-dey.github.io/pcb-dev-dsPIC30F3011/): 2-layer dsPIC30F3011 development board in KiCad.
+- [pcb-dev-dsPIC30F6010A](https://shishir-dey.github.io/pcb-dev-dsPIC30F6010A/): 4-layer dsPIC30F6010A development board in KiCad.
+- [pcb-mcu-stm32c0](https://shishir-dey.github.io/pcb-mcu-stm32c0/): An STM32C031 microcontroller board with M.2 B+M key connector.
+
+## RTL
+
+- [vhdl-samples](https://shishir-dey.github.io/vhdl-samples/): VHDL digital circuits with automated CI/CD test suite.
+- [LISA](https://shishir-dey.github.io/LISA/): A synthesizable processor with an ISA based on a simplified LLVM-like bytecode format.
+
+## CAD
+
+- [cad-alarm-clock](https://shishir-dey.github.io/cad-alarm-clock/): 3D modeled alarm clock designed in FreeCAD.
+
+## Misc
+
+- [Clippy](https://shishir-dey.github.io/Clippy/): Minimal notepad tribute to Microsoft's Clippy.
+- [open_battery](https://shishir-dey.github.io/open_battery/): Flutter replica of the XiaoXiangElectric app for Jiabaida BMS.
+- [Rhythm](https://shishir-dey.github.io/Rhythm/): Tracks daily Energy, Clarity, and Mood in a calm, private yearly heatmap.
