@@ -75,7 +75,7 @@
         --tag-pill-text: var(--accent-strong);
 
         --modal-bg: #ffffff;
-        --modal-backdrop: rgba(49, 45, 56, 0.4);
+        --modal-backdrop: rgba(49, 45, 56, 0.75);
 
         --close-bg: #ba1a1a;
         --close-border: transparent;
@@ -145,7 +145,7 @@
         --tag-pill-text: var(--accent-strong);
 
         --modal-bg: var(--surface-container-high);
-        --modal-backdrop: rgba(10, 8, 14, 0.6);
+        --modal-backdrop: rgba(10, 8, 14, 0.88);
 
         --close-bg: #ffb4a8;
         --close-border: transparent;
